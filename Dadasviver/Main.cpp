@@ -219,7 +219,8 @@ public:
 
 		if (katana.enable == true)
 		{
-			Circle{ katana.x,katana.y,katana.co }.draw(ColorF{ 0.0,1.0,0.0 });
+			//Circle{ katana.x,katana.y,katana.co }.draw(ColorF{ 0.0,1.0,0.0 });
+			TextureAsset(U"katanaimg").rotated(rolling*8_deg).draw(katana.x-37, katana.y-25);
 		}
 
 		//自機のHPゲージ
@@ -233,6 +234,10 @@ public:
 		if (wno == 0)
 		{
 			TextureAsset(U"knifeicon").draw(10, 0);
+		}
+		if (wno == 1)
+		{
+			TextureAsset(U"katanaicon").draw(10, 0);
 		}
 
 		if (levelup == true)
@@ -741,7 +746,7 @@ void Katana()
 		katana.x = abe.x;
 		katana.y = abe.y;
 		rolling++;
-		if (rolling == 50)
+		if (rolling == 40)
 		{
 			katana.enable = false;
 			rolling = 0;
