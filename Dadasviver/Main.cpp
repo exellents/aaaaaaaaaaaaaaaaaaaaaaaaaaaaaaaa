@@ -64,6 +64,8 @@ bool pause = false;		//ポーズ機能
 bool levelup = false;	//レベルアップ演出
 int select = 0;			//レベルアップボーナス選択用
 
+int rolling = 0;
+
 class Title : public App::Scene // タイトルシーン
 {
 public:
@@ -215,6 +217,11 @@ public:
 			}
 		}
 
+		if (katana.enable == true)
+		{
+			Circle{ katana.x,katana.y,katana.co }.draw(ColorF{ 0.0,1.0,0.0 });
+		}
+
 		//自機のHPゲージ
 		RectF{ abe.x - 20,abe.y + 20,abe.HP / 25,10 }.draw(ColorF{ 0.0,0.0,1.0 });
 
@@ -338,7 +345,7 @@ void init()
 
 	katana.level = 0;
 	katana.enable = false;
-	katana.co = 10;
+	katana.co = 40;
 	katana.atk = 30;
 
 	for (int i = 0; i < slimenum; i++)
@@ -727,6 +734,19 @@ void Katana()
 	if (wct == 0)
 	{
 		katana.enable = true;
+	}
+
+	if (katana.enable == true)
+	{
+		katana.x = abe.x;
+		katana.y = abe.y;
+		rolling++;
+		if (rolling == 50)
+		{
+			katana.enable = false;
+			rolling = 0;
+			wct = 200;
+		}
 	}
 }
 
