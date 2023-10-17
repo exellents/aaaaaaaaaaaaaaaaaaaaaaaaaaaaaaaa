@@ -425,8 +425,6 @@ void enemy()
 			{
 				if (weaponcollsion(knife[j], slime[i]) && knife[j].enable == true)
 				{
-
-					knife[j].vx = 0;
 					knife[j].vy = 0;
 					knife[j].enable = false;
 					slime[i].HP -= knife[j].atk;
@@ -434,8 +432,18 @@ void enemy()
 					FontAsset(U"Reggae One")(U"10!!"_fmt(knife[j].atk)).
 						drawAt({ slime[i].x,slime[i].y - 30 }, ColorF{ 100.0,0.0,0.0 });
 
+					knife[j].vx = 0;
+
 
 				}
+			}
+
+			if (weaponcollsion(katana, slime[i]) && katana.enable == true)
+			{
+				slime[i].HP -= katana.atk;
+
+				FontAsset(U"Reggae One")(U"30!!"_fmt(katana.atk)).
+					drawAt({ slime[i].x,slime[i].y - 30 }, ColorF{ 100.0,0.0,0.0 });
 			}
 
 			if (slime[i].HP <= 0)
@@ -472,6 +480,11 @@ void weapon()
 	if (wno == 0)
 	{
 		Knife();
+	}
+
+	if (wno == 1)
+	{
+		Katana();
 	}
 
 	if (wct > 0)
@@ -696,6 +709,11 @@ void Knife()
 			}
 		}
 	}
+}
+
+void Katana()
+{
+
 }
 
 //レベルアップ時の関数
