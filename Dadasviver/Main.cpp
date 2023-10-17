@@ -75,7 +75,7 @@ public:
 	void update()  override
 	{
 		// 左クリックで
-		if (MouseL.down())
+		if (MouseL.down()||KeyEnter.down())
 		{
 			// ゲームシーンに遷移
 			changeScene(U"Game");
@@ -159,13 +159,8 @@ public:
 
 					if (weaponcollsion(knife[j], slime[i]))
 					{
-
-
 						FontAsset(U"Reggae One")(U"10!!"_fmt(knife[j].atk)).
 							drawAt({ slime[i].x,slime[i].y - 30 }, ColorF{ 100.0,0.0,0.0 });
-
-
-
 					}
 				}
 
@@ -476,6 +471,22 @@ void enemy()
 //武器のアップデート関数
 void weapon()
 {
+	if (wno == 2)
+	{
+		wno = 0;
+	}
+
+	if (KeySpace.down())
+	{
+		if (wno == 0)
+		{
+			for (int i = 0; i < slimenum; i++)
+			{
+				knife[i].enable = false;
+			}
+		}
+		wno++;
+	}
 
 	if (wno == 0)
 	{
@@ -494,7 +505,7 @@ void weapon()
 
 }
 
-//描画関数
+/*//描画関数
 void draw()
 {
 
@@ -633,7 +644,7 @@ void draw()
 		Rect{ 0, 0, 800, 600 }.draw(ColorF{ 0.0,0.0,0.0,0.3 });
 	}
 
-}
+}*/
 
 //ナイフのアップデート関数
 void Knife()
@@ -713,7 +724,10 @@ void Knife()
 
 void Katana()
 {
-
+	if (wct == 0)
+	{
+		katana.enable = true;
+	}
 }
 
 //レベルアップ時の関数
