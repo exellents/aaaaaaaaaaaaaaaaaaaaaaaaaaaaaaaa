@@ -68,7 +68,7 @@ int select = 0;			//レベルアップボーナス選択用
 
 int rolling = 0;
 
-const Vec2 pos;
+double t;
 
 class Title : public App::Scene // タイトルシーン
 {
@@ -108,7 +108,7 @@ public:
 
 	void update()
 	{
-
+		t = Scene::Time();
 
 		if (pause == false && levelup == false)
 		{
@@ -272,8 +272,6 @@ public:
 			}
 
 		}
-
-		Circle{ pos, syuriken.co }.draw(ColorF{ 0.25 });
 
 		if (pause == true)
 		{
@@ -789,15 +787,15 @@ void Syuriken()
 	syuriken.x = abe.x;
 	syuriken.y = abe.y;
 
-	const double t = Scene::Time();
-
 	for (auto i : step(4))
 	{
 		// 円座標系における角度座標
 		// 60° ごとに配置し、毎秒 30° の速さで回転する
 		const double theta = (i * 90_deg + t * 180_deg);
 
-		Vec2 pos = OffsetCircular{ Vec2(syuriken.x,syuriken.y), 100, theta };
+		const Vec2 pos = OffsetCircular{ Vec2(syuriken.x,syuriken.y), 100, theta };
+
+		Circle{ pos, syuriken.co }.draw(ColorF{ 0.25 });
 	}
 }
 
