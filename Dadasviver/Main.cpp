@@ -59,6 +59,7 @@ int wct = 0;	//武器のクールタイム
 int delay = 0;	//斜めに向いたときディレイをかける
 int wno = 0;	//武器のナンバー
 int flame = 0;  //現在のフレーム数
+ 
 
 bool pause = false;		//ポーズ機能
 bool levelup = false;	//レベルアップ演出
@@ -110,7 +111,16 @@ public:
 			player();
 			enemy();
 			weapon();
+
+			if (abe.enable == false)
+			{
+				// ゲームシーンに遷移
+				changeScene(U"Result");
+			}
+
 		}
+		
+		
 
 		if (levelup == true && pause == false)
 		{
@@ -128,6 +138,7 @@ public:
 				pause = true;
 			}
 		}
+		
 
 	}
 	void draw()const override
@@ -271,6 +282,62 @@ public:
 
 
 };
+class Result :public App::Scene
+{
+	public:
+		Result(const InitData & init)
+			:IScene{init}
+		{}
+		~Result(){}
+
+		void update() override
+		{
+			Reseed(123456789ull);
+
+			int32 r = Random(2);
+				switch (r)
+				{
+				case 0:
+					TextureAsset(U"ED1").draw(0, 0);
+					if (MouseL.down())
+					{
+						// ゲームシーンに遷移
+						changeScene(U"Title");
+						break;
+					}
+				
+
+				case 1:
+					TextureAsset(U"ED2").draw(0, 0);
+					if (MouseL.down())
+					{
+						// ゲームシーンに遷移
+						changeScene(U"Title");
+						break;
+					}
+					
+
+				case 2:
+					TextureAsset(U"ED3").draw(0, 0);
+					if (MouseL.down())
+					{
+						// ゲームシーンに遷移
+						changeScene(U"Title");
+				      break;
+					}
+					
+
+				default:
+					break;
+				}
+		}
+		void draw() const override
+		{
+			TextureAsset::Register(U"ED1", U"Ed_Lose1.jpg");
+			TextureAsset::Register(U"ED2", U"Ed_Lose2.jpg");
+			TextureAsset::Register(U"ED3", U"Ed_Lose3.jpg");
+		}
+};
 
 
 void Main()
@@ -279,6 +346,7 @@ void Main()
 	App manager;
 	manager.add<Title>(U"Title");
 	manager.add<Game>(U"Game");
+	manager.add<Game>(U"Result");
 
 	init();
 	//Scene::SetBackground(ColorF{ 0.3, 1.0, 0.3 });
@@ -293,6 +361,9 @@ void Main()
 	TextureAsset::Register(U"slimeimg", U"slime.png");
 	TextureAsset::Register(U"diaimg", U"diamond.png");
 	TextureAsset::Register(U"OP1", U"OP1.jpg");
+	TextureAsset::Register(U"ED1", U"Ed_Lose1.jpg");
+	TextureAsset::Register(U"ED2", U"Ed_Lose2.jpg");
+	TextureAsset::Register(U"ED3", U"Ed_Lose3.jpg");
 
 	FontAsset::Register(U"Reggae One", 20, U"Reggae-master/fonts/ttf/ReggaeOne-Regular.ttf");
 
@@ -376,6 +447,7 @@ void player()
 	if (abe.HP <= 0)
 	{
 		abe.enable = false;
+	 
 	}
 
 	for (int i = 0; i < slimenum; i++)
@@ -787,6 +859,8 @@ void direction()
 		--delay;
 	}
 }
+
+
 
 
 
