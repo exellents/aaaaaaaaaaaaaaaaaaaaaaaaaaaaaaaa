@@ -111,7 +111,6 @@ public:
 			enemy();
 			weapon();
 		}
-		draw();
 
 		if (levelup == true && pause == false)
 		{
