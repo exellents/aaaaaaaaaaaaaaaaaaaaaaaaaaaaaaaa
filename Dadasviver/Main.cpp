@@ -39,12 +39,14 @@ Unit slime[slimenum];
 Unit dia[slimenum];
 Weapon knife[knifenum];
 Weapon katana;
+Weapon syuriken;
 
 void init();	//初期化設定
 void player();	//自機
 void weapon();	//武器
 void Knife();	//ナイフ
 void Katana();	//刀
+void Syuriken();//手裏剣
 void enemy();	//敵機
 void Levelup();	//レベルアップ時の演出
 void draw();	//描画
@@ -353,6 +355,11 @@ void init()
 	katana.co = 40;
 	katana.atk = 30;
 
+	syuriken.level = 1;
+	syuriken.enable = true;
+	syuriken.co = 10;
+	syuriken.atk = 10;
+
 	for (int i = 0; i < slimenum; i++)
 	{
 		dia[i].co = 10;
@@ -441,7 +448,7 @@ void enemy()
 					knife[j].enable = false;
 					slime[i].HP -= knife[j].atk;
 
-					FontAsset(U"Reggae One")(U"10!!"_fmt(knife[j].atk)).
+					FontAsset(U"Reggae One")(U"{}!!"_fmt(knife[j].atk)).
 						drawAt({ slime[i].x,slime[i].y - 30 }, ColorF{ 100.0,0.0,0.0 });
 
 					knife[j].vx = 0;
@@ -454,7 +461,15 @@ void enemy()
 			{
 				slime[i].HP -= katana.atk;
 
-				FontAsset(U"Reggae One")(U"30!!"_fmt(katana.atk)).
+				FontAsset(U"Reggae One")(U"{}!!"_fmt(katana.atk)).
+					drawAt({ slime[i].x,slime[i].y - 30 }, ColorF{ 100.0,0.0,0.0 });
+			}
+
+			if (weaponcollsion(syuriken, slime[i]))
+			{
+				slime[i].HP -= syuriken.atk;
+
+				FontAsset(U"Reggae One")(U"{}!!"_fmt(syuriken.atk)).
 					drawAt({ slime[i].x,slime[i].y - 30 }, ColorF{ 100.0,0.0,0.0 });
 			}
 
@@ -513,6 +528,11 @@ void weapon()
 	if (wno == 1)
 	{
 		Katana();
+	}
+
+	if (syuriken.level == 1)
+	{
+		Syuriken();
 	}
 
 	if (wct > 0)
@@ -757,6 +777,25 @@ void Katana()
 			rolling = 0;
 			wct = 200;
 		}
+	}
+}
+
+void Syuriken()
+{
+	syuriken.x = abe.x;
+	syuriken.y = abe.y;
+
+	const double t = Scene::Time();
+
+	for (auto i : step(4))
+	{
+		// 円座標系における角度座標
+		// 60° ごとに配置し、毎秒 30° の速さで回転する
+		const double theta = (i * 90_deg + t * 180_deg);
+
+		const Vec2 pos = OffsetCircular{ Vec2(syuriken.x,syuriken.y), 100, theta };
+
+		Circle{ pos, syuriken.co }.draw(ColorF{ 0.25 });
 	}
 }
 
