@@ -403,6 +403,11 @@ void player()
 		abe.exp = 0;
 	}
 
+	if (abe.inv > 0)
+	{
+		--abe.inv;
+	}
+
 }
 
 //敵機のアップデート関数
@@ -422,10 +427,10 @@ void enemy()
 			slime[i].x += slime[i].vx;
 			slime[i].y += slime[i].vy;
 
-			if (collision(abe, slime[i]))
+			if (collision(abe, slime[i]) && abe.inv == 0)
 			{
 				--abe.HP;
-
+				abe.inv = 30;
 			}
 
 			for (int j = 0; j < knifenum; j++)
