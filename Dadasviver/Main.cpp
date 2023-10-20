@@ -49,7 +49,7 @@ void Katana();	//刀
 void Syuriken();//手裏剣
 void enemy();	//敵機
 void Levelup();	//レベルアップ時の演出
-void draw();	//描画
+//void draw();	//描画
 void direction();//自機の向き
 
 
@@ -67,6 +67,8 @@ bool levelup = false;	//レベルアップ演出
 int select = 0;			//レベルアップボーナス選択用
 
 int rolling = 0;
+
+const Vec2 pos;
 
 class Title : public App::Scene // タイトルシーン
 {
@@ -115,7 +117,7 @@ public:
 			enemy();
 			weapon();
 		}
-		draw();
+		//draw();
 
 		if (levelup == true && pause == false)
 		{
@@ -270,6 +272,8 @@ public:
 			}
 
 		}
+
+		Circle{ pos, syuriken.co }.draw(ColorF{ 0.25 });
 
 		if (pause == true)
 		{
@@ -793,9 +797,7 @@ void Syuriken()
 		// 60° ごとに配置し、毎秒 30° の速さで回転する
 		const double theta = (i * 90_deg + t * 180_deg);
 
-		const Vec2 pos = OffsetCircular{ Vec2(syuriken.x,syuriken.y), 100, theta };
-
-		Circle{ pos, syuriken.co }.draw(ColorF{ 0.25 });
+		Vec2 pos = OffsetCircular{ Vec2(syuriken.x,syuriken.y), 100, theta };
 	}
 }
 
