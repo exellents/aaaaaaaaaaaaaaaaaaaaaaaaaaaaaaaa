@@ -248,7 +248,7 @@ public:
 			}
 			else if (select == 0)
 			{
-				RoundRect{ 100, 200, 180, 225, 20 }.drawShadow(Vec2{ 2, 2 }, 8, 0).draw(ColorF{ 0.0,0.0,0.7 });
+				RoundRect{ 100, 200, 180, 225, 20 }.drawShadow(Vec2{ 2, 2 }, 8, 0).draw(ColorF{ 0.8,0.9,1.0 });
 			}
 			if (select != 1)
 			{
@@ -256,7 +256,7 @@ public:
 			}
 			else if (select == 1)
 			{
-				RoundRect{ 310, 200, 180, 225, 20 }.drawShadow(Vec2{ 2, 2 }, 8, 0).draw(ColorF{ 0.0,0.0,0.7 });
+				RoundRect{ 310, 200, 180, 225, 20 }.drawShadow(Vec2{ 2, 2 }, 8, 0).draw(ColorF{ 0.8,0.9,1.0 });
 			}
 			if (select != 2)
 			{
@@ -264,7 +264,7 @@ public:
 			}
 			else if (select == 2)
 			{
-				RoundRect{ 520, 200, 180, 225, 20 }.drawShadow(Vec2{ 2, 2 }, 8, 0).draw(ColorF{ 0.0,0.0,0.7 });
+				RoundRect{ 520, 200, 180, 225, 20 }.drawShadow(Vec2{ 2, 2 }, 8, 0).draw(ColorF{ 0.8,0.9,1.0 });
 			}
 
 		}
