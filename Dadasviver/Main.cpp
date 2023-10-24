@@ -70,7 +70,8 @@ int rolling = 0;
 
 double t;
 
-double theta;
+double theta[4];
+
 
 class Title : public App::Scene // タイトルシーン
 {
@@ -110,10 +111,11 @@ public:
 
 	void update()
 	{
-		t = Scene::Time();
 
 		if (pause == false && levelup == false)
 		{
+			//時間
+			t = Scene::Time();
 			direction();
 			player();
 			enemy();
@@ -229,7 +231,11 @@ public:
 			TextureAsset(U"katanaimg").rotated(rolling*8_deg).draw(katana.x-37, katana.y-25);
 		}
 
-		Circle{ OffsetCircular{ Vec2{syuriken.x,syuriken.y}, 100, theta }, syuriken.co }.draw(ColorF{ 0.25 });
+		for (int i=0; i < syuriken.level; i++)
+		{
+			//手裏剣の描画
+			Circle{ OffsetCircular{ Vec2{syuriken.x,syuriken.y}, 100, theta[i]}, syuriken.co }.draw(ColorF{ 0.25 });
+		}
 
 		//自機のHPゲージ
 		RectF{ abe.x - 20,abe.y + 20,abe.HP / 25,10 }.draw(ColorF{ 0.0,0.0,1.0 });
@@ -361,8 +367,8 @@ void init()
 	katana.co = 40;
 	katana.atk = 30;
 
-	syuriken.level = 1;
-	syuriken.enable = true;
+	syuriken.level = 0;
+	syuriken.enable = false;
 	syuriken.co = 10;
 	syuriken.atk = 10;
 
@@ -463,13 +469,17 @@ void enemy()
 				}
 			}
 
-			const Vec2 pos = OffsetCircular{ Vec2{syuriken.x,syuriken.y},100, theta };
-			if (Circle{ pos, syuriken.co }.intersects(Circle{slime[i].x, slime[i].y, slime[i].co}))
+			//手裏剣の当たり判定
+			for (int j=0; j < syuriken.level; j++)
 			{
-				slime[i].HP -= syuriken.atk;
+				const Vec2 pos = OffsetCircular{ Vec2{syuriken.x,syuriken.y},100, theta[j]};
+				if (Circle{ pos, syuriken.co }.intersects(Circle{ slime[i].x, slime[i].y, slime[i].co }))
+				{
+					slime[i].HP -= syuriken.atk;
 
-				FontAsset(U"Reggae One")(U"{}!!"_fmt(syuriken.atk)).
-					drawAt({ slime[i].x,slime[i].y - 30 }, ColorF{ 100.0,0.0,0.0 });
+					FontAsset(U"Reggae One")(U"{}!!"_fmt(syuriken.atk)).
+						drawAt({ slime[i].x,slime[i].y - 30 }, ColorF{ 100.0,0.0,0.0 });
+				}
 			}
 
 			if (weaponcollsion(katana, slime[i]) && katana.enable == true)
@@ -545,10 +555,8 @@ void weapon()
 		Katana();
 	}
 
-	if (syuriken.level == 1)
-	{
+
 		Syuriken();
-	}
 
 	if (wct > 0)
 	{
@@ -800,11 +808,23 @@ void Syuriken()
 	syuriken.x = abe.x;
 	syuriken.y = abe.y;
 
-	for (auto i : step(4))
+	if (syuriken.level >= 1)
 	{
 		// 円座標系における角度座標
-		// 90° ごとに配置し、毎秒 180° の速さで回転する
-		theta = (i * 90_deg + t * 180_deg);
+		theta[0] = (90_deg + t * 180_deg);
+		
+	}
+	if (syuriken.level >= 2)
+	{
+		theta[1] = (270_deg + t * 180_deg);
+	}
+	if (syuriken.level >= 3)
+	{
+		theta[2] = (180_deg + t * 180_deg);
+	}
+	if (syuriken.level >= 4)
+	{
+		theta[3] = (0_deg + t * 180_deg);
 	}
 }
 
