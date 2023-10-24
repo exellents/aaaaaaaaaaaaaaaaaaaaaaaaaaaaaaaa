@@ -60,7 +60,8 @@ int muki = 0;	//自機の向き
 int wct = 0;	//武器のクールタイム
 int delay = 0;	//斜めに向いたときディレイをかける
 int wno = 0;	//武器のナンバー
-int flame = 0;  //現在のフレーム数
+int Destroy = 0;  //倒した数
+
 
 bool pause = false;		//ポーズ機能
 bool levelup = false;	//レベルアップ演出
@@ -84,7 +85,7 @@ public:
 	void update()  override
 	{
 		// 左クリックで
-		if (MouseL.down()||KeyEnter.down())
+		if (MouseL.down() || KeyEnter.down())
 		{
 			// ゲームシーンに遷移
 			changeScene(U"Game");
@@ -120,6 +121,15 @@ public:
 			player();
 			enemy();
 			weapon();
+			if (Destroy >= 10)
+			{
+				changeScene(U"WResult");
+			}
+			if (abe.enable == false)
+			{
+				// ゲームシーンに遷移
+				changeScene(U"LResult");
+			}
 		}
 		//draw();
 
@@ -228,10 +238,10 @@ public:
 		if (katana.enable == true)
 		{
 			//Circle{ katana.x,katana.y,katana.co }.draw(ColorF{ 0.0,1.0,0.0 });
-			TextureAsset(U"katanaimg").rotated(rolling*8_deg).draw(katana.x-37, katana.y-25);
+			TextureAsset(U"katanaimg").rotated(rolling * 8_deg).draw(katana.x - 37, katana.y - 25);
 		}
 
-		for (int i=0; i < syuriken.level; i++)
+		for (int i = 0; i < syuriken.level; i++)
 		{
 			//手裏剣の描画
 			Circle{ OffsetCircular{ Vec2{syuriken.x,syuriken.y}, 100, theta[i]}, syuriken.co }.draw(ColorF{ 0.25 });
@@ -293,7 +303,100 @@ public:
 
 
 };
+class LResult :public App::Scene//負けた時のエンディング
+{
+public:
+	LResult(const InitData& init)
+		:IScene{ init }
+	{}
+	~LResult() {}
 
+	int r = Random(2);
+	void update() override
+	{
+
+
+		if (r == 0)
+		{
+			TextureAsset(U"ED1").draw(0, 0);
+
+			if (MouseL.down())
+			{
+				// ゲームシーンに遷移
+				changeScene(U"Title");
+			}
+		}
+		else if (r == 1) {
+			TextureAsset(U"ED2").draw(0, 0);
+			if (MouseL.down())
+			{
+				// ゲームシーンに遷移
+				changeScene(U"Title");
+			}
+		}
+		else if (r == 2) {
+			TextureAsset(U"ED3").draw(0, 0);
+			if (MouseL.down())
+			{
+				// ゲームシーンに遷移
+				changeScene(U"Title");
+			}
+		}
+	}
+	void draw() const override
+	{
+		TextureAsset::Register(U"ED1", U"Ed_Lose1.jpg");
+		TextureAsset::Register(U"ED2", U"Ed_Lose2.jpg");
+		TextureAsset::Register(U"ED3", U"Ed_Lose3.jpg");
+	}
+};
+class WResult :public App::Scene//負けた時のエンディング
+{
+public:
+	WResult(const InitData& init)
+		:IScene{ init }
+	{}
+	~WResult() {}
+
+	int r = Random(2);
+	void update() override
+	{
+
+
+		if (r == 0)
+		{
+			TextureAsset(U"ED4").draw(0, 0);
+
+			if (MouseL.down())
+			{
+				// ゲームシーンに遷移
+				changeScene(U"Title");
+			}
+		}
+		else if (r == 1) {
+			TextureAsset(U"ED5").draw(0, 0);
+			if (MouseL.down())
+			{
+				// ゲームシーンに遷移
+				changeScene(U"Title");
+			}
+		}
+		else if (r == 2) {
+			TextureAsset(U"ED6").draw(0, 0);
+			if (MouseL.down())
+			{
+				// ゲームシーンに遷移
+				changeScene(U"Title");
+			}
+		}
+	}
+	void draw() const override
+	{
+		TextureAsset::Register(U"ED4", U"Ed_Win1.jpg");
+		TextureAsset::Register(U"ED5", U"Ed_Win2.jpg");
+		TextureAsset::Register(U"ED6", U"Ed_Win3.jpg");
+	}
+};
 
 void Main()
 {
@@ -301,6 +404,9 @@ void Main()
 	App manager;
 	manager.add<Title>(U"Title");
 	manager.add<Game>(U"Game");
+	manager.add<LResult>(U"LResult");
+	manager.add<WResult>(U"WResult");
+
 
 	init();
 	//Scene::SetBackground(ColorF{ 0.3, 1.0, 0.3 });
@@ -315,6 +421,12 @@ void Main()
 	TextureAsset::Register(U"slimeimg", U"slime.png");
 	TextureAsset::Register(U"diaimg", U"diamond.png");
 	TextureAsset::Register(U"OP1", U"OP1.jpg");
+	TextureAsset::Register(U"ED1", U"ed_lose1.jpg");
+	TextureAsset::Register(U"ED2", U"ed_lose2.jpg");
+	TextureAsset::Register(U"ED3", U"ed_lose3.jpg");
+	TextureAsset::Register(U"ED4", U"ed_win1.jpg");
+	TextureAsset::Register(U"ED5", U"ed_win2.jpg");
+	TextureAsset::Register(U"ED6", U"ed_win3.jpg");
 
 	FontAsset::Register(U"Reggae One", 20, U"Reggae-master/fonts/ttf/ReggaeOne-Regular.ttf");
 
@@ -427,6 +539,11 @@ void player()
 		--abe.inv;
 	}
 
+	if (KeyK.pressed())
+	{
+		--abe.HP;
+	}
+
 }
 
 //敵機のアップデート関数
@@ -470,9 +587,9 @@ void enemy()
 			}
 
 			//手裏剣の当たり判定
-			for (int j=0; j < syuriken.level; j++)
+			for (int j = 0; j < syuriken.level; j++)
 			{
-				const Vec2 pos = OffsetCircular{ Vec2{syuriken.x,syuriken.y},100, theta[j]};
+				const Vec2 pos = OffsetCircular{ Vec2{syuriken.x,syuriken.y},100, theta[j] };
 				if (Circle{ pos, syuriken.co }.intersects(Circle{ slime[i].x, slime[i].y, slime[i].co }))
 				{
 					slime[i].HP -= syuriken.atk;
@@ -507,6 +624,7 @@ void enemy()
 						dia[j].x = slime[i].x;
 						dia[j].y = slime[i].y;
 						dia[j].enable = true;
+						Destroy++;
 						break;
 					}
 				}
@@ -556,7 +674,7 @@ void weapon()
 	}
 
 
-		Syuriken();
+	Syuriken();
 
 	if (wct > 0)
 	{
@@ -812,7 +930,7 @@ void Syuriken()
 	{
 		// 円座標系における角度座標
 		theta[0] = (90_deg + t * 180_deg);
-		
+
 	}
 	if (syuriken.level >= 2)
 	{
