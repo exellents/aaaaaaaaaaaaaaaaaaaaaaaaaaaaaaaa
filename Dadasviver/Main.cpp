@@ -321,7 +321,7 @@ public:
 		{
 			TextureAsset(U"ED1").draw(0, 0);
 
-			if (MouseL.down())
+			if (MouseL.down() || KeyEnter.down())
 			{
 				// ゲームシーンに遷移
 				changeScene(U"Title");
@@ -329,7 +329,7 @@ public:
 		}
 		else if (r == 1) {
 			TextureAsset(U"ED2").draw(0, 0);
-			if (MouseL.down())
+			if (MouseL.down() || KeyEnter.down())
 			{
 				// ゲームシーンに遷移
 				changeScene(U"Title");
@@ -337,7 +337,7 @@ public:
 		}
 		else if (r == 2) {
 			TextureAsset(U"ED3").draw(0, 0);
-			if (MouseL.down())
+			if (MouseL.down() || KeyEnter.down())
 			{
 				// ゲームシーンに遷移
 				changeScene(U"Title");
@@ -368,7 +368,7 @@ public:
 		{
 			TextureAsset(U"ED4").draw(0, 0);
 
-			if (MouseL.down())
+			if (MouseL.down() || KeyEnter.down())
 			{
 				// ゲームシーンに遷移
 				changeScene(U"Title");
@@ -376,7 +376,7 @@ public:
 		}
 		else if (r == 1) {
 			TextureAsset(U"ED5").draw(0, 0);
-			if (MouseL.down())
+			if (MouseL.down() || KeyEnter.down())
 			{
 				// ゲームシーンに遷移
 				changeScene(U"Title");
@@ -384,7 +384,7 @@ public:
 		}
 		else if (r == 2) {
 			TextureAsset(U"ED6").draw(0, 0);
-			if (MouseL.down())
+			if (MouseL.down() || KeyEnter.down())
 			{
 				// ゲームシーンに遷移
 				changeScene(U"Title");
