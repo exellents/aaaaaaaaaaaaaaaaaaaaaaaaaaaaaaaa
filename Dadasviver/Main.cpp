@@ -70,6 +70,8 @@ int rolling = 0;
 
 double t;
 
+double theta;
+
 class Title : public App::Scene // タイトルシーン
 {
 public:
@@ -226,6 +228,8 @@ public:
 			//Circle{ katana.x,katana.y,katana.co }.draw(ColorF{ 0.0,1.0,0.0 });
 			TextureAsset(U"katanaimg").rotated(rolling*8_deg).draw(katana.x-37, katana.y-25);
 		}
+
+		Circle{ OffsetCircular{ Vec2(syuriken.x,syuriken.y), 100, theta }, syuriken.co }.draw(ColorF{ 0.25 });
 
 		//自機のHPゲージ
 		RectF{ abe.x - 20,abe.y + 20,abe.HP / 25,10 }.draw(ColorF{ 0.0,0.0,1.0 });
@@ -791,11 +795,7 @@ void Syuriken()
 	{
 		// 円座標系における角度座標
 		// 60° ごとに配置し、毎秒 30° の速さで回転する
-		const double theta = (i * 90_deg + t * 180_deg);
-
-		const Vec2 pos = OffsetCircular{ Vec2(syuriken.x,syuriken.y), 100, theta };
-
-		Circle{ pos, syuriken.co }.draw(ColorF{ 0.25 });
+		theta = (i * 90_deg + t * 180_deg);
 	}
 }
 
