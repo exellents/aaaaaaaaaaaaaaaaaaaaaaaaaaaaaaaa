@@ -51,6 +51,7 @@ void enemy();	//敵機
 void Levelup();	//レベルアップ時の演出
 //void draw();	//描画
 void direction();//自機の向き
+void globalinit();
 
 
 bool collision(Unit a, Unit b);	//当たり判定関数
@@ -69,7 +70,7 @@ int select = 0;			//レベルアップボーナス選択用
 
 int rolling = 0;
 
-double t;
+double t = 0;
 
 double theta[4];
 
@@ -409,6 +410,7 @@ void Main()
 
 
 	init();
+	globalinit();
 	//Scene::SetBackground(ColorF{ 0.3, 1.0, 0.3 });
 
 	//アセットを登録する
@@ -479,7 +481,7 @@ void init()
 	katana.co = 40;
 	katana.atk = 30;
 
-	syuriken.level = 0;
+	syuriken.level = 4;
 	syuriken.enable = false;
 	syuriken.co = 10;
 	syuriken.atk = 10;
@@ -1037,6 +1039,22 @@ void direction()
 	}
 }
 
+void globalinit()
+{
+	int muki = 0;	//自機の向き
+	int wct = 0;	//武器のクールタイム
+	int delay = 0;	//斜めに向いたときディレイをかける
+	int wno = 0;	//武器のナンバー
+	int Destroy = 0;  //倒した数
 
 
+	bool pause = false;		//ポーズ機能
+	bool levelup = false;	//レベルアップ演出
+	int select = 0;			//レベルアップボーナス選択用
 
+	int rolling = 0;
+
+	double t = 0;
+
+	double theta[4];
+}
