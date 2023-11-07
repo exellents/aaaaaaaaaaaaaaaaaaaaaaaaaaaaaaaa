@@ -62,7 +62,7 @@ int wct = 0;	//武器のクールタイム
 int delay = 0;	//斜めに向いたときディレイをかける
 int wno = 0;	//武器のナンバー
 int Destroy = 0;  //倒した数
-
+double accumukatedTime = 0.0;//時間経過の蓄積
 
 bool pause = false;		//ポーズ機能
 bool levelup = false;//レベルアップ演出
@@ -184,11 +184,17 @@ public:
 				}
 				for (int j = 0; j < knifenum; j++)
 				{
-
+					
+					
 					if (weaponcollsion(knife[j], slime[i]))
-					{
-						FontAsset(U"Reggae One")(U"10!!"_fmt(knife[j].atk)).
-							drawAt({ slime[i].x,slime[i].y - 30 }, ColorF{ 100.0,0.0,0.0 });
+					{accumukatedTime += Scene::DeltaTime();
+					 if (accumukatedTime >= 1.0)
+					 {
+						 FontAsset(U"Reggae One")(U"10!!"_fmt(knife[j].atk)).
+							 drawAt({ slime[i].x,slime[i].y - 30 }, ColorF{ 100.0,0.0,0.0 });
+						 accumukatedTime = 0;
+					 }
+						
 					}
 				}
 
