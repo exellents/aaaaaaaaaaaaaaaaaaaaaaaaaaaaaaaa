@@ -252,8 +252,8 @@ public:
 		for (int i = 0; i < syuriken.level; i++)
 		{
 			//手裏剣の描画
-			Circle{ OffsetCircular{ Vec2{syuriken.x,syuriken.y}, 100, theta[i]}, syuriken.co }.draw(ColorF{ 0.25 });
-			//TextureAsset(U"shuriken").rotated(OffsetCircular{ Vec2{syuriken.x,syuriken.y}, 100, theta[i] }).draw(syuriken.x , syuriken.y);
+			//Circle{ OffsetCircular{ Vec2{syuriken.x,syuriken.y}, 100, theta[i]}, syuriken.co }.draw(ColorF{ 0.25 });
+			TextureAsset(U"shuriken").rotated(rolling * 8_deg).draw(OffsetCircular{ Vec2{syuriken.x,syuriken.y}, 100, theta[i] });
 		}
 
 		//自機のHPゲージ
