@@ -65,7 +65,8 @@ int Destroy = 0;  //倒した数
 
 
 bool pause = false;		//ポーズ機能
-bool levelup = false;	//レベルアップ演出
+bool levelup = false;//レベルアップ演出
+bool enable = false;
 int select = 0;			//レベルアップボーナス選択用
 
 int rolling = 0;
@@ -85,9 +86,11 @@ public:
 	{}
 	void update()  override
 	{
+		AudioAsset(U"OP").play();
 		// 左クリックで
 		if (MouseL.down() || KeyEnter.down())
 		{
+			AudioAsset(U"Enter").playOneShot();
 			// ゲームシーンに遷移
 			changeScene(U"Game");
 		}
@@ -113,7 +116,7 @@ public:
 
 	void update()
 	{
-
+		AudioAsset(U"OP").stop();
 		if (pause == false && levelup == false)
 		{
 			AudioAsset(U"BGM").setVolume(1.0);
@@ -319,7 +322,13 @@ public:
 	int r = Random(2);
 	void update() override
 	{
+		if (enable == false)
+		{
+			enable = true;
+			AudioAsset(U"Lscene").playOneShot();
+		}
 
+	
 
 		if (r == 0)
 		{
@@ -366,7 +375,12 @@ public:
 	int r = Random(2);
 	void update() override
 	{
-
+		if (enable == false)
+		{
+			enable = true;
+          AudioAsset(U"Wscene").playOneShot();
+		}
+		
 
 		if (r == 0)
 		{
@@ -375,6 +389,7 @@ public:
 			if (MouseL.down() || KeyEnter.down())
 			{
 				// ゲームシーンに遷移
+				AudioAsset(U"Wp").playOneShot();
 				changeScene(U"Title");
 			}
 		}
@@ -435,7 +450,18 @@ void Main()
 	TextureAsset::Register(U"ED6", U"ed_win3.jpg");
 
 	AudioAsset::Register(U"BGM", U"BGM.mp3");
-	
+	AudioAsset::Register(U"Wscene", U"W.mp3");
+	AudioAsset::Register(U"Wp", U"Wscene.mp3");
+	AudioAsset::Register(U"Lscene", U"EDscene.mp3");
+	AudioAsset::Register(U"Enter", U"pushEnter.mp3");
+	AudioAsset::Register(U"knife", U"throw Knife.mp3");
+	AudioAsset::Register(U"destroy", U"slime destroy.mp3");
+	AudioAsset::Register(U"Pdamege", U"player damege.mp3");
+	AudioAsset::Register(U"Lvup", U"LvUp.mp3");
+	AudioAsset::Register(U"shuriken", U"roop throw shuriken.mp3");
+	AudioAsset::Register(U"katana", U"swing sword.mp3");
+	AudioAsset::Register(U"eq", U"Equipment.mp3");
+	AudioAsset::Register(U"OP", U"OP.mp3");
 
 	FontAsset::Register(U"Reggae One", 20, U"Reggae-master/fonts/ttf/ReggaeOne-Regular.ttf");
 
@@ -538,6 +564,7 @@ void player()
 	}
 	if (abe.exp >= 600)
 	{
+		AudioAsset(U"Lvup").playOneShot();
 		levelup = true;
 		++abe.level;
 		abe.exp = 0;
@@ -574,6 +601,7 @@ void enemy()
 
 			if (collision(abe, slime[i]) && abe.inv == 0)
 			{
+				AudioAsset(U"Pdamege").playOneShot();
 				--abe.HP;
 				abe.inv = 30;
 			}
@@ -633,6 +661,7 @@ void enemy()
 						dia[j].x = slime[i].x;
 						dia[j].y = slime[i].y;
 						dia[j].enable = true;
+						AudioAsset(U"destroy").playOneShot();
 						Destroy++;
 						break;
 					}
@@ -888,6 +917,7 @@ void Knife()
 				knife[i].y = abe.y;
 
 				knife[i].enable = true;
+				AudioAsset(U"knife").playOneShot();
 				wct = 50;//連射速度　小さいほど連射できる
 				break;
 			}
@@ -911,6 +941,7 @@ void Knife()
 
 void Katana()
 {
+	
 	if (wct == 0)
 	{
 		katana.enable = true;
@@ -918,11 +949,13 @@ void Katana()
 
 	if (katana.enable == true)
 	{
+		
 		katana.x = abe.x;
 		katana.y = abe.y;
 		rolling++;
 		if (rolling == 40)
 		{
+			
 			katana.enable = false;
 			rolling = 0;
 			wct = 200;
@@ -934,7 +967,7 @@ void Syuriken()
 {
 	syuriken.x = abe.x;
 	syuriken.y = abe.y;
-
+	
 	if (syuriken.level >= 1)
 	{
 		// 円座標系における角度座標
@@ -968,6 +1001,7 @@ void Levelup()
 	}
 	if (KeyShift.down())
 	{
+		AudioAsset(U"eq").playOneShot();
 		levelup = false;
 	}
 }
