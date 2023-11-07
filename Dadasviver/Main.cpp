@@ -1,7 +1,7 @@
 ﻿# include <Siv3D.hpp> // OpenSiv3D v0.6.11d
 
 using App = SceneManager<String>;
-
+//aaa
 struct Unit
 {
 	double x;
