@@ -253,6 +253,7 @@ public:
 		{
 			//手裏剣の描画
 			Circle{ OffsetCircular{ Vec2{syuriken.x,syuriken.y}, 100, theta[i]}, syuriken.co }.draw(ColorF{ 0.25 });
+			//TextureAsset(U"shuriken").rotated(OffsetCircular{ Vec2{syuriken.x,syuriken.y}, 100, theta[i] }).draw(syuriken.x , syuriken.y);
 		}
 
 		//自機のHPゲージ
@@ -438,6 +439,7 @@ void Main()
 	TextureAsset::Register(U"knifeimg", U"ナイフ.png");
 	TextureAsset::Register(U"knifeicon", U"knifeicon.png");
 	TextureAsset::Register(U"katanaimg", U"刀.png");
+	TextureAsset::Register(U"shuriken", U"syuriken.png");
 	TextureAsset::Register(U"katanaicon", U"刀アイコン.jpg");
 	TextureAsset::Register(U"slimeimg", U"slime.png");
 	TextureAsset::Register(U"diaimg", U"diamond.png");
