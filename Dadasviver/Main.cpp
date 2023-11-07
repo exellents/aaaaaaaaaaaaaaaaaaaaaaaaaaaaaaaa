@@ -116,6 +116,8 @@ public:
 
 		if (pause == false && levelup == false)
 		{
+			AudioAsset(U"BGM").setVolume(1.0);
+			AudioAsset(U"BGM").play();
 			//時間
 			t = Scene::Time();
 			direction();
@@ -124,10 +126,12 @@ public:
 			weapon();
 			if (Destroy >= 10)
 			{
+				AudioAsset(U"BGM").stop();
 				changeScene(U"WResult");
 			}
 			if (abe.enable == false)
 			{
+				AudioAsset(U"BGM").stop();
 				// ゲームシーンに遷移
 				changeScene(U"LResult");
 			}
@@ -351,7 +355,7 @@ public:
 		TextureAsset::Register(U"ED3", U"Ed_Lose3.jpg");
 	}
 };
-class WResult :public App::Scene//負けた時のエンディング
+class WResult :public App::Scene//勝った時のエンディング
 {
 public:
 	WResult(const InitData& init)
@@ -429,6 +433,9 @@ void Main()
 	TextureAsset::Register(U"ED4", U"ed_win1.jpg");
 	TextureAsset::Register(U"ED5", U"ed_win2.jpg");
 	TextureAsset::Register(U"ED6", U"ed_win3.jpg");
+
+	AudioAsset::Register(U"BGM", U"BGM.mp3");
+	
 
 	FontAsset::Register(U"Reggae One", 20, U"Reggae-master/fonts/ttf/ReggaeOne-Regular.ttf");
 
